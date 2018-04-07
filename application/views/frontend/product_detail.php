@@ -114,7 +114,7 @@
                                         </div>
 
                                         <div class="col-sm-7">
-                                            <a href="#" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
+                                            <a href="<?php echo base_url().'Home/a2c/'.$this->uri->segment(3);?>" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
                                         </div>
 
 

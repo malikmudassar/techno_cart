@@ -8,8 +8,13 @@
             <div class="header-top-inner">
                 <div class="cnt-account">
                     <ul class="list-unstyled">
-                        <li><a href="<?= base_url().'Home/Customer_sign_up'?>"><i class="icon fa fa-lock"></i>Register</a></li>
-                        <li><a href="<?= base_url().'Home/customer_sign_in'?>"><i class="icon fa fa-lock"></i>Login</a></li>
+                        <?php if(isset($this->session->userdata['email'])){?>
+                            <li><span style="color: lightgoldenrodyellow">Hi! <?php echo $this->session->userdata['last_name']?></span></li>
+                            <li><a href="<?= base_url().'Home/logout'?>"><i class="icon fa fa-lock"></i>Logout</a></li>
+                        <?php } else {?>
+                            <li><a href="<?= base_url().'Home/Customer_sign_up'?>"><i class="icon fa fa-lock"></i>Register</a></li>
+                            <li><a href="<?= base_url().'Home/customer_sign_in'?>"><i class="icon fa fa-lock"></i>Login</a></li>
+                        <?php }?>
                     </ul>
                 </div>
                 <div class="clearfix"></div>
@@ -59,8 +64,13 @@
                     <div class="dropdown dropdown-cart"> <a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
                             <div class="items-cart-inner">
                                 <div class="basket"> <i class="glyphicon glyphicon-shopping-cart"></i> </div>
-                                <div class="basket-item-count"><span class="count">2</span></div>
-                                <div class="total-price-basket"> <span class="lbl">cart -</span> <span class="total-price"> <span class="sign">$</span><span class="value">600.00</span> </span> </div>
+                                <?php if(isset($this->cart)){?>
+                                    <div class="basket-item-count"><span class="count"><?php echo count($this->cart->contents());?></span></div>
+                                <?php } else {?>
+                                    <div class="basket-item-count"><span class="count">0</span></div>
+                                <?php }?>
+                                <div class="total-price-basket"> <span class="lbl">Items-</span> <span class="total-price"> <span class="sign">$</span><span class="value"><?php if(isset($this->cart)){echo $this->cart->total().'.00';}else{ echo '0.00';}?>
+                                        </span> </span> </div>
                             </div>
                         </a>
                         <ul class="dropdown-menu">

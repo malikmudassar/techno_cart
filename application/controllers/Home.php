@@ -13,6 +13,7 @@ class Home extends CI_Controller
         $this->load->model('Home_model');
         $this->load->model('Admin_model');
         $this->load->library('My_PHPMailer');
+        $this->load->library('cart');
         $this->load->library('form_validation');
     }
 
@@ -80,11 +81,31 @@ class Home extends CI_Controller
         $data['sub_category']  = $this->Admin_model->getAll('sub_category');
         $data['brands']  = $this->Admin_model->getAll('brands');
         //echo "<pre>";print_r($data['product_detail']);exit;
+        if($this->input->get('id')!=''){
+            $this->cart->insert($data['product_detail']['id']);
+        }
         $data['title'] = $data['company_info']['name']." | Contact Us";
+
         $this->load->view('frontend/static/head',$data);
         $this->load->view('frontend/static/header');
         $this->load->view('frontend/product_detail');
         $this->load->view('frontend/static/footer');
+    }
+    /**
+        Add to Cart
+     */
+    public function a2c()
+    {
+        $id=$this->uri->segment(3);
+        $data['product'] = $this->Home_model->getById('products',$id);
+        $product=array(
+            'id'    =>  $data['product']['id'],
+            'name'  =>  $data['product']['name'],
+            'price' =>  $data['product']['sale_price'],
+            'qty'   =>  1
+        );
+        $this->cart->insert($product);
+        redirect(base_url());
     }
 
     /*===== REGISTER =====*/
@@ -138,7 +159,16 @@ class Home extends CI_Controller
             }
             else
             {
-
+                $user=$this->Home_model->do_login($_POST);
+                if($user)
+                {
+                    $this->session->set_userdata($user);
+                    redirect(base_url());
+                }
+                else
+                {
+                    $data['errors']='Sorry, Wrong Credentials, Try Again!';
+                }
             }
         }
         else

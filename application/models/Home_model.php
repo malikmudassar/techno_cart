@@ -155,6 +155,12 @@ class Home_model extends CI_Model
         }
     }
 
+    public function logout()
+    {
+        $this->session->sess_destroy();
+        redirect(base_url());
+    }
+
     /*===== UPDATE PROFILE =====*/
     public function update_profile($data, $id)
     {
